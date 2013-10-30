@@ -42,6 +42,8 @@ import android.os.SystemClock;
 import org.ros.node.ConnectedNode;
 import org.ros.message.Time;
 import org.ros.namespace.GraphName;
+import org.ros.namespace.NameResolver;
+
 import sensor_msgs.Imu;
 import org.ros.node.Node;
 import org.ros.node.NodeMain;
@@ -207,7 +209,8 @@ public class ImuPublisher implements NodeMain
   {
 	  try
 	  {
-			this.publisher = node.newPublisher("android/imu", "sensor_msgs/Imu");
+			NameResolver resolver = NameResolver.newFromNamespace(node.getName());
+			this.publisher = node.newPublisher(resolver.resolve("imu"), "sensor_msgs/Imu");
 			// 	Determine if we have the various needed sensors
 			boolean hasAccel = false;
 			boolean hasGyro = false;

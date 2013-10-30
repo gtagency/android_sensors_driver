@@ -37,6 +37,7 @@ import android.os.Bundle;
 import android.os.Looper;
 
 import org.ros.namespace.GraphName;
+import org.ros.namespace.NameResolver;
 import org.ros.node.ConnectedNode;
 import org.ros.message.Time;
 import sensor_msgs.NavSatFix;
@@ -146,7 +147,8 @@ public void onStart(ConnectedNode node)
 {
   try
   {
-	this.publisher = node.newPublisher("android/fix", "sensor_msgs/NavSatFix");
+	NameResolver resolver = NameResolver.newFromNamespace(node.getName());
+	this.publisher = node.newPublisher(resolver.resolve("fix"), "sensor_msgs/NavSatFix");
   	this.navSatFixListener = new NavSatListener(publisher);
   	this.navSatThread = new NavSatThread(this.locationManager, this.navSatFixListener);
   	this.navSatThread.start();
